@@ -1,0 +1,18 @@
+# Environment variables
+.env
+.env.*
+
+# Playwright
+playwright-report/
+test-results/
+
+# Node modules
+node_modules/
+
+# Logs
+*.log
+
+# Visual Studio
+.vs/
+bin/
+obj/

@@ -1,0 +1,22 @@
+{
+  "name": "hokusyo-playwright-automation",
+  "version": "1.0.0",
+  "description": "Playwright automation for Hokusyo login and registration flow",
+  "main": "index.js",
+  "scripts": {
+    "test": "node node_modules/@playwright/test/cli.js test",
+    "test:headed": "node node_modules/@playwright/test/cli.js test --headed",
+    "show-report": "node node_modules/@playwright/test/cli.js show-report"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "imapflow": "^1.0.156",
+    "mailparser": "^3.7.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/mailparser": "^3.4.4",
+    "@types/node": "^20.14.2",
+    "typescript": "^5.4.5"
+  }
+}
