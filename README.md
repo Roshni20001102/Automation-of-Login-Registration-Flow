@@ -39,23 +39,41 @@ npm install
 
 To bypass the Windows command shell ampersand path bug (caused by spaces or `&` characters in the directory name), **always run tests using `npm` scripts instead of `npx playwright`**:
 
-* **Run tests in Headless mode:**
-  ```bash
-  npm test
-  ```
-* **Run tests in Headed mode (opens a browser window to watch execution):**
-  ```bash
-  npm run test:headed
-  ```
-* **Open the last HTML Test Report:**
-  ```bash
-  npm run show-report
-  ```
+| Script | Description |
+|---|---|
+| `npm test` | Run the browser-based magic link login test (headless) |
+| `npm run test:headed` | Run the browser login test in headed mode (visible browser) |
+| `npm run test:api` | Run the API-level login tests (no browser needed) |
+| `npm run test:all` | Run all tests (both browser + API) |
+| `npm run show-report` | Open the last HTML test report |
 
 ---
 
 ## Project Structure
-* **`tests/login.spec.ts`**: The main login test flow.
-* **`helpers/email-helper.ts`**: The IMAP client that logs in and polls for the magic link.
-* **`playwright.config.ts`**: Playwright test engine settings (increased timeout to 90 seconds to allow for email delivery).
-* **`.env`**: Local credentials configuration (ignored by Git).
+
+```
+.
+├── tests/
+│   ├── login.spec.ts          # Browser-based end-to-end test
+│   └── login.api.spec.ts      # API-level tests (no browser)
+├── helpers/
+│   └── email-helper.ts        # IMAP client to poll for magic link emails
+├── playwright.config.ts       # Playwright configuration
+├── .env                       # Local credentials (not committed to Git)
+├── .env.example               # Template for env configuration
+└── package.json               # Project scripts and dependencies
+```
+
+---
+
+## API Test Cases (`tests/login.api.spec.ts`)
+
+The API tests call the AWS Cognito endpoint directly (no browser required) and cover:
+
+| # | Test | Expected Result |
+|---|---|---|
+| 1 | `InitiateAuth` with valid email | Cognito returns `200` with `CUSTOM_CHALLENGE` and a `Session` token |
+| 2 | `RespondToAuthChallenge` – trigger magic link | Magic link email arrives in inbox, URL contains `/admin/login/callback` |
+| 3 | `InitiateAuth` with unregistered email | Cognito returns `200` (user enumeration protection — no account leak) |
+| 4 | `InitiateAuth` with empty username | Cognito returns `400 InvalidParameterException` |
+| 5 | `InitiateAuth` with invalid Client ID | Cognito returns `400 InvalidParameterException` |

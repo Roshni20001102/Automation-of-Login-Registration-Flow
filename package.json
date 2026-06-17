@@ -4,8 +4,10 @@
   "description": "Playwright automation for Hokusyo login and registration flow",
   "main": "index.js",
   "scripts": {
-    "test": "node node_modules/@playwright/test/cli.js test",
-    "test:headed": "node node_modules/@playwright/test/cli.js test --headed",
+    "test": "node node_modules/@playwright/test/cli.js test tests/login.spec.ts",
+    "test:headed": "node node_modules/@playwright/test/cli.js test tests/login.spec.ts --headed",
+    "test:api": "node node_modules/@playwright/test/cli.js test tests/login.api.spec.ts",
+    "test:all": "node node_modules/@playwright/test/cli.js test",
     "show-report": "node node_modules/@playwright/test/cli.js show-report"
   },
   "dependencies": {
