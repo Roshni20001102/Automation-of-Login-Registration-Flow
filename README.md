@@ -1,4 +1,4 @@
-# Hokusyo Magic Link Login Automation
+# Hokusyo Project Automation
 
 This project contains Playwright automation scripts to test the magic link login flow on the Hokusyo staging environment (`https://staging.hokusyo.site/admin/login`) and development environment (`https://dev.hokusyo.site/admin/login`).
 

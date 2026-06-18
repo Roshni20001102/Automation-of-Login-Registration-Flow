@@ -1,7 +1,7 @@
 {
-  "name": "hokusyo-playwright-automation",
+  "name": "hokusyo-project-automation",
   "version": "1.0.0",
-  "description": "Playwright automation for Hokusyo login and registration flow",
+  "description": "Playwright automation for Hokusyo project",
   "main": "index.js",
   "scripts": {
     "test": "node node_modules/@playwright/test/cli.js test tests/login.spec.ts",
