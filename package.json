@@ -7,6 +7,8 @@
     "test": "node node_modules/@playwright/test/cli.js test tests/login.spec.ts",
     "test:headed": "node node_modules/@playwright/test/cli.js test tests/login.spec.ts --headed",
     "test:api": "node node_modules/@playwright/test/cli.js test tests/login.api.spec.ts",
+    "test:dev": "node node_modules/@playwright/test/cli.js test tests/login.dev.spec.ts",
+    "test:dev:headed": "node node_modules/@playwright/test/cli.js test tests/login.dev.spec.ts --headed",
     "test:all": "node node_modules/@playwright/test/cli.js test",
     "show-report": "node node_modules/@playwright/test/cli.js show-report"
   },

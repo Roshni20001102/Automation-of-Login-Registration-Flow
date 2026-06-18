@@ -1,13 +1,21 @@
 # Hokusyo Magic Link Login Automation
 
-This project contains Playwright automation scripts to test the magic link login flow on the Hokusyo staging environment (`https://staging.hokusyo.site/admin/login`).
+This project contains Playwright automation scripts to test the magic link login flow on the Hokusyo staging environment (`https://staging.hokusyo.site/admin/login`) and development environment (`https://dev.hokusyo.site/admin/login`).
 
-## How the Flow Works
+## How the Flows Work
+
+### 1. Staging Environment (`tests/login.spec.ts`)
 1. The script navigates to the login page and enters the gateway email `develop.hokusyo@eraman.net`.
 2. It clicks the **ログインリンクを送信** (Send Login Link) button.
 3. The script connects to your personal registered email address's inbox (Hostinger Titan Mail by default) using secure IMAP (`imapflow`).
 4. It polls the inbox for emails containing the subject `"ログインリンク"` or `"hokusyo"` received during the test run.
 5. Once found, it extracts the magic link from the email, navigates the page to that link, and verifies successful redirection to the `/admin` dashboard.
+
+### 2. Development Environment (`tests/login.dev.spec.ts`)
+1. The script navigates to the login page and enters the registered admin email `admin@hokusyo.site`.
+2. It clicks the **Send login link** button.
+3. Since SES (email sending) is disabled on development, the magic link is rendered directly on the page inside a yellow box.
+4. The script extracts the magic link directly from the page DOM (no IMAP connection needed), navigates to it, and verifies successful redirection to the `/admin` dashboard.
 
 ---
 
@@ -27,7 +35,8 @@ npm install
    cp .env.example .env
    ```
 2. Open the **`.env`** file and configure your credentials:
-   - `LOGIN_EMAIL`: The email entered on the web login form (`develop.hokusyo@eraman.net`).
+   - `LOGIN_EMAIL`: The email entered on the staging login form (`develop.hokusyo@eraman.net`).
+   - `DEV_LOGIN_EMAIL`: The email entered on the dev login form (`admin@hokusyo.site`).
    - `IMAP_USER`: The personal registered email inbox address where your magic link is routed (e.g., your Titan Mail address).
    - `IMAP_PASSWORD`: The password for your personal registered email inbox.
    - `IMAP_HOST`: The IMAP server host. Defaults to `imap.titan.email` (Hostinger Titan Mail).
@@ -41,10 +50,12 @@ To bypass the Windows command shell ampersand path bug (caused by spaces or `&` 
 
 | Script | Description |
 |---|---|
-| `npm test` | Run the browser-based magic link login test (headless) |
-| `npm run test:headed` | Run the browser login test in headed mode (visible browser) |
-| `npm run test:api` | Run the API-level login tests (no browser needed) |
-| `npm run test:all` | Run all tests (both browser + API) |
+| `npm test` | Run the staging browser-based magic link login test (headless) |
+| `npm run test:headed` | Run the staging browser login test in headed mode |
+| `npm run test:api` | Run the staging API-level login tests (no browser needed) |
+| `npm run test:dev` | Run the dev browser-based magic link login test (headless) |
+| `npm run test:dev:headed` | Run the dev browser login test in headed mode |
+| `npm run test:all` | Run all tests (staging, dev, and API) |
 | `npm run show-report` | Open the last HTML test report |
 
 ---
@@ -54,8 +65,9 @@ To bypass the Windows command shell ampersand path bug (caused by spaces or `&` 
 ```
 .
 ├── tests/
-│   ├── login.spec.ts          # Browser-based end-to-end test
-│   └── login.api.spec.ts      # API-level tests (no browser)
+│   ├── login.spec.ts          # Staging browser-based end-to-end test
+│   ├── login.dev.spec.ts      # Dev browser-based end-to-end test (directly reads magic link from page)
+│   └── login.api.spec.ts      # Staging API-level tests (no browser)
 ├── helpers/
 │   └── email-helper.ts        # IMAP client to poll for magic link emails
 ├── playwright.config.ts       # Playwright configuration
